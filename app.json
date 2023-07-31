@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Book My Journey",
+    "slug": "BookMyJourney",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#008080"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "0ccaf82e-4f21-4d05-bbcd-520ddb0f9fa9"
+      }
+    },
+    "android": {
+      "googleServicesFile": "./google-services.json",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/splash.png",
+        "backgroundColor": "#008080"
+      },
+      "package": "com.anasmughal743.BookMyJourney",
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCDEsMqXr5e7uSqDfrNGMBA0zZKE__pVxU"
+        }
+      }
+    },
+    "ios": {},
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "483086327612",
+    "project_id": "book-my-journey",
+    "storage_bucket": "book-my-journey.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483086327612:android:836bfa30768b883b6d8839",
+        "android_client_info": {
+          "package_name": "com.anasmughal743.BookMyJourney"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483086327612-39bg0jkcmj5evdhbplga2b77sdgvltrs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anasmughal743.BookMyJourney",
+            "certificate_hash": "71f35a2b5db3b2658b0c357fbb32c3f897fe3080"
+          }
+        },
+        {
+          "client_id": "483086327612-rb7eb3mlgfscbvjfpfkb9khblfsf64ca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anasmughal743.BookMyJourney",
+            "certificate_hash": "42f58d661fe38d9283d49411aa94072058983dd7"
+          }
+        },
+        {
+          "client_id": "483086327612-0su8joiomqnss19gmngmu4mjq1j682d4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZHMH-abkXg8lick4YiEe0fizx-Clewgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483086327612-0su8joiomqnss19gmngmu4mjq1j682d4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
