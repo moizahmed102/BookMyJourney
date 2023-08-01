@@ -8,7 +8,6 @@ import {
   Keyboard,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
 import { firebase } from "../config";
 import { StyleSheet } from "react-native";
 
@@ -16,19 +15,53 @@ export default function RegistrationScreen({ navigation }) {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  // Add other error states as needed
 
   const onFooterLinkPress = () => {
     navigation.navigate("Login");
   };
 
-  const onRegisterPress = () => {
+  const validateEmail = () => {
+    // Implement email validation here, e.g., regex or other checks
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError("Invalid email format.");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePassword = () => {
+    // Implement password validation here, e.g., minimum length check
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters long.");
+      return false;
+    }
+    setPasswordError("");
+    return true;
+  };
+
+  const validateConfirmPassword = () => {
     if (password !== confirmPassword) {
-      alert("Passwords don't match.");
+      setConfirmPasswordError("Passwords don't match.");
+      return false;
+    }
+    setConfirmPasswordError("");
+    return true;
+  };
+
+  const onRegisterPress = () => {
+    Keyboard.dismiss();
+
+    if (!validateEmail() || !validatePassword() || !validateConfirmPassword()) {
       return;
     }
-
-    Keyboard.dismiss();
 
     firebase
       .auth()
@@ -40,6 +73,7 @@ export default function RegistrationScreen({ navigation }) {
           email,
           fullName,
           access_right: "user",
+          phone,
         };
         const usersRef = firebase.firestore().collection("users");
         usersRef
@@ -49,11 +83,11 @@ export default function RegistrationScreen({ navigation }) {
             navigation.navigate("Main", { user: data });
           })
           .catch((error) => {
-            alert(error);
+            alert("Error saving user data: " + error.message);
           });
       })
       .catch((error) => {
-        alert(error);
+        alert("Error creating user: " + error.message);
       });
   };
 
@@ -82,6 +116,20 @@ export default function RegistrationScreen({ navigation }) {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
+        {emailError !== "" && (
+          <Text style={styles.errorText}>{emailError}</Text>
+        )}
+        <TextInput
+          style={styles.input}
+          placeholder="Phone Number"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(numeric) => setPhone(numeric)}
+          value={phone}
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+          keyboardType="numeric" // Add this line to accept only numeric input
+          maxLength={11} // Add this line to limit the input to 10 digits
+        />
         <TextInput
           style={styles.input}
           placeholderTextColor="#aaaaaa"
@@ -92,6 +140,9 @@ export default function RegistrationScreen({ navigation }) {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
+        {passwordError !== "" && (
+          <Text style={styles.errorText}>{passwordError}</Text>
+        )}
         <TextInput
           style={styles.input}
           placeholderTextColor="#aaaaaa"
@@ -102,6 +153,9 @@ export default function RegistrationScreen({ navigation }) {
           underlineColorAndroid="transparent"
           autoCapitalize="none"
         />
+        {confirmPasswordError !== "" && (
+          <Text style={styles.errorText}>{confirmPasswordError}</Text>
+        )}
         <TouchableOpacity style={styles.button} onPress={onRegisterPress}>
           <Text style={styles.buttonTitle}>Create account</Text>
         </TouchableOpacity>
@@ -128,6 +182,11 @@ const styles = StyleSheet.create({
     height: 240,
     width: 225,
     alignSelf: "center",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 14,
+    marginTop: 5,
   },
   input: {
     height: 48,

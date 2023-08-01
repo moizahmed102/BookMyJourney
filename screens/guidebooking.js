@@ -137,7 +137,7 @@ const GuideBooking = ({ route }) => {
         onPress={bookGuide}
         style={styles.bookButton}
         icon={({ color, size }) => (
-          <MaterialIcons name="event-available" color={color} size={size} />
+          <MaterialIcons name="event-available" color={"#F0F0F5"} size={size} />
         )}
       >
         <Text style={styles.buttonText}>Book Now</Text>

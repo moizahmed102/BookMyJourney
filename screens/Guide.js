@@ -10,7 +10,14 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import { firebase } from "../config";
-import { Button, Card, Divider, List, Avatar } from "react-native-paper"; // Import components from react-native-paper
+import {
+  Button,
+  Card,
+  Divider,
+  List,
+  Avatar,
+  Surface,
+} from "react-native-paper"; // Import components from react-native-paper
 
 const GuideSearch = () => {
   const navigation = useNavigation();
@@ -73,37 +80,46 @@ const GuideSearch = () => {
     const guideRoute = searchOption === "intracity" ? "Intracity" : item.route;
     return (
       <Card style={styles.card}>
-        <Card.Title title={`Guide: ${item.guideId}`} />
-        <Card.Content>
+        <Card.Title
+          title={`Guide: ${item.guideId}`}
+          titleStyle={styles.listItemText}
+        />
+
+        <Card.Content style={styles.cardContent}>
           <List.Item
             title={`Price: ${item.price}`}
-            left={() => <List.Icon icon="cash" />}
-            textColor="#1F1F29"
+            left={() => <List.Icon icon="cash" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           <Divider />
           <List.Item
             title={`Route: ${guideRoute}`} // Use the modified guideRoute variable
-            left={() => <List.Icon icon="map" />}
+            left={() => <List.Icon icon="map" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           <Divider />
           <List.Item
             title={`Days: ${item.days}`}
-            left={() => <List.Icon icon="calendar" />}
+            left={() => <List.Icon icon="calendar" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           <Divider />
           <List.Item
             title={`Vehicle Type: ${item.vehicleType}`}
-            left={() => <List.Icon icon="car" />}
+            left={() => <List.Icon icon="car" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           <Divider />
           <List.Item
             title={`City: ${item.city}`}
-            left={() => <List.Icon icon="home" />}
+            left={() => <List.Icon icon="home" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           <Divider />
           <List.Item
             title={`Rating: ${item.rating}`}
-            left={() => <List.Icon icon="star" />}
+            left={() => <List.Icon icon="star" color="#1F1F29" />}
+            titleStyle={styles.listItemText}
           />
           {/* Hire Guide Button */}
           <Button
@@ -199,7 +215,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
     paddingVertical: 10,
-    color: "#ffffff",
+    color: "#F0F0F5",
   },
   sortContainer: {
     flexDirection: "row",
@@ -221,10 +237,14 @@ const styles = StyleSheet.create({
   card: {
     marginBottom: 10,
     borderRadius: 8,
-    elevation: 4, // Add a shadow effect for the card
-    backgroundColor: "#F0F9FA",
+    backgroundColor: "#DAECEC",
   },
-
+  cardContent: {
+    color: "#F0F0F5",
+  },
+  listItemText: {
+    color: "#1F1F29", // Add this line to set the text color for List.Item components
+  },
   hireButton: {
     marginTop: 10,
     alignSelf: "auto", // Align the button to the right side of the card content

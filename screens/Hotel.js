@@ -130,20 +130,21 @@ const HotelMap = () => {
       <Card.Content>
         <Title style={styles.hotelName}>{item.name}</Title>
         <Text style={[styles.hotelDetailText, styles.hotelDetailHeading]}>
-          Price per Night: {item.pricePerNight}
+          Price per Night: <Text>{item.pricePerNight}</Text>
         </Text>
         <Text style={[styles.hotelDetailText, styles.hotelDetailHeading]}>
-          Address: {item.address}
+          Address: <Text>{item.address}</Text>
         </Text>
-        <Text style={styles.hotelDetailText}>
-          Description: {item.description}
+        <Text style={styles.hotelDetailHeading}>
+          Description: <Text>{item.description}</Text>
         </Text>
-
-        <Text style={styles.hotelDetailText}>
+        <Text style={styles.hotelDetailHeading}>
+          Rating: <Text>{item.rating}</Text>
+        </Text>
+        {/* <Text style={styles.hotelDetailText}>
           Available Rooms: {item.availableRooms}
         </Text>
-        <Text style={styles.hotelDetailText}>Rating: {item.rating}</Text>
-        <Text style={styles.hotelDetailText}>Id: {item.id}</Text>
+        <Text style={styles.hotelDetailText}>Id: {item.id}</Text> */}
       </Card.Content>
       <Card.Actions>
         <Button

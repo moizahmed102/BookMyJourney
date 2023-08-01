@@ -27,32 +27,42 @@ const MyBookingsScreen = () => {
     try {
       setIsLoading(true); // Start loading
 
-      const currentUserUid = firebase.auth().currentUser.uid;
-
       let bookingsRef;
       if (bookingType === "hotel") {
-        bookingsRef = firebase
-          .firestore()
-          .collection("Hotel-Bookings")
-          .where("uid", "==", currentUserUid);
+        bookingsRef = firebase.firestore().collection("Hotel-Bookings");
       } else if (bookingType === "bus") {
-        bookingsRef = firebase
-          .firestore()
-          .collection("userBookings")
-          .where("userEmail", "==", firebase.auth().currentUser.email);
+        bookingsRef = firebase.firestore().collection("userBookings");
       } else if (bookingType === "guide") {
-        bookingsRef = firebase
-          .firestore()
-          .collection("GuideBooked")
-          .where("userEmail", "==", firebase.auth().currentUser.email);
+        bookingsRef = firebase.firestore().collection("GuideBooked");
       } else {
         return; // Invalid booking type, do nothing
       }
 
       return bookingsRef.onSnapshot((snapshot) => {
-        const bookingsData = snapshot.docs.map((doc) => doc.data());
-        setBookings(bookingsData);
-        setIsLoading(false); // Stop loading
+        const bookingsData = snapshot.docs.map(async (doc) => {
+          const booking = doc.data();
+          const { uid } = booking;
+          try {
+            // Fetch additional user information from the users collection
+            const userDoc = await firebase
+              .firestore()
+              .collection("users")
+              .doc(uid)
+              .get();
+            if (userDoc.exists) {
+              const user = userDoc.data();
+              booking.userEmail = user.email;
+              booking.phone = user.phone;
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+          return booking;
+        });
+        Promise.all(bookingsData).then((completedBookingsData) => {
+          setBookings(completedBookingsData);
+          setIsLoading(false); // Stop loading
+        });
       });
     } catch (error) {
       console.error("Error subscribing to bookings:", error);
@@ -71,53 +81,65 @@ const MyBookingsScreen = () => {
 
     return (
       <Card style={[styles.bookingCard, { backgroundColor: "#f0f9fa" }]}>
-        {isHotelBooking && (
-          <View>
-            <Text style={styles.bookingText}>Hotel Name: {item.hotelName}</Text>
-            <Text style={styles.bookingText}>
-              Check-In Date: {item.checkInDate}
-            </Text>
-            <Text style={styles.bookingText}>
-              Check-Out Date: {item.checkOutDate}
-            </Text>
-            <Text style={styles.bookingText}>Room Count: {item.roomCount}</Text>
-            <Text style={styles.bookingText}>
-              Total Payment: {item.totalPayment}
-            </Text>
-          </View>
-        )}
-        {isBusBooking && (
-          <View>
-            <Text style={styles.bookingText}>
-              Departure Time: {item.departureTime}
-            </Text>
-            <Text style={styles.bookingText}>
-              Bus Service: {item.busService}
-            </Text>
-            <Text style={styles.bookingText}>
-              Arrival Time: {item.arrivalTime}
-            </Text>
-            <Text style={styles.bookingText}>Price: {item.totalPrice}</Text>
-            <Text style={styles.bookingText}>Route: {item.route}</Text>
-            <Text style={styles.bookingText}>Date: {item.date}</Text>
-            {item.selectedSeats && (
+        <View>
+          {/* Show userEmail and phone fields for all booking types */}
+          <Text style={styles.bookingText}>User Email: {item.userEmail}</Text>
+          <Text style={styles.bookingText}>Phone: {item.phone}</Text>
+
+          {isHotelBooking && (
+            <View>
               <Text style={styles.bookingText}>
-                Selected Seats: {item.selectedSeats.join(", ")}
+                Hotel Name: {item.hotelName}
               </Text>
-            )}
-          </View>
-        )}
-        {isGuideBooking && (
-          <View>
-            <Text style={styles.bookingText}>Days: {item.days}</Text>
-            <Text style={styles.bookingText}>Guide ID: {item.guideId}</Text>
-            <Text style={styles.bookingText}>Price: {item.price}</Text>
-            <Text style={styles.bookingText}>Route: {item.route}</Text>
-            <Text style={styles.bookingText}>
-              Selected Date: {item.selectedDate}
-            </Text>
-          </View>
-        )}
+              <Text style={styles.bookingText}>
+                Check-In Date: {item.checkInDate}
+              </Text>
+              <Text style={styles.bookingText}>
+                Check-Out Date: {item.checkOutDate}
+              </Text>
+              <Text style={styles.bookingText}>
+                Room Count: {item.roomCount}
+              </Text>
+              <Text style={styles.bookingText}>
+                Total Payment: {item.totalPayment}
+              </Text>
+            </View>
+          )}
+
+          {isBusBooking && (
+            <View>
+              <Text style={styles.bookingText}>
+                Departure Time: {item.departureTime}
+              </Text>
+              <Text style={styles.bookingText}>
+                Bus Service: {item.busService}
+              </Text>
+              <Text style={styles.bookingText}>
+                Arrival Time: {item.arrivalTime}
+              </Text>
+              <Text style={styles.bookingText}>Price: {item.totalPrice}</Text>
+              <Text style={styles.bookingText}>Route: {item.route}</Text>
+              <Text style={styles.bookingText}>Date: {item.date}</Text>
+              {item.selectedSeats && (
+                <Text style={styles.bookingText}>
+                  Selected Seats: {item.selectedSeats.join(", ")}
+                </Text>
+              )}
+            </View>
+          )}
+
+          {isGuideBooking && (
+            <View>
+              <Text style={styles.bookingText}>Days: {item.days}</Text>
+              <Text style={styles.bookingText}>Guide ID: {item.guideId}</Text>
+              <Text style={styles.bookingText}>Price: {item.price}</Text>
+              <Text style={styles.bookingText}>Route: {item.route}</Text>
+              <Text style={styles.bookingText}>
+                Selected Date: {item.selectedDate}
+              </Text>
+            </View>
+          )}
+        </View>
       </Card>
     );
   };
