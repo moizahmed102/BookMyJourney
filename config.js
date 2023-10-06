@@ -4,12 +4,12 @@ import 'firebase/compat/firestore';
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBc6Dxl0mbmtJ9LezqMBPFYhtxZ95yzOWU",
-  authDomain: "book-my-journey.firebaseapp.com",
-  projectId: "book-my-journey",
-  storageBucket: "book-my-journey.appspot.com",
-  messagingSenderId: "483086327612",
-  appId: "1:483086327612:web:64f970bbfb73c9c86d8839"
+  apiKey: "Put your apikey",
+  authDomain: "",// put all your related confiq from firebase here
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: ""
 };
 
 if (!firebase.apps.length) {
